@@ -1,0 +1,43 @@
+{
+  "name": "@jmazzahacks/byteforge-converse-api-js",
+  "version": "0.0.1",
+  "description": "TypeScript client for the ByteforgeConverse backend API",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Jason Byteforge <jason@reallybadapps.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmazzahacks/byteforge-converse-api-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jmazzahacks/byteforge-converse-api-js/issues"
+  },
+  "homepage": "https://github.com/jmazzahacks/byteforge-converse-api-js#readme",
+  "keywords": [
+    "byteforge",
+    "converse",
+    "llm",
+    "client",
+    "api"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}
