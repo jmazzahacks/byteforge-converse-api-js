@@ -1,5 +1,6 @@
 import type {
   Conversation,
+  ConversationCreate,
   ListResponse,
   Message,
   Session,
@@ -61,7 +62,7 @@ export class ConverseClient {
     });
   }
 
-  createConversation(payload: Partial<Conversation>): Promise<Conversation> {
+  createConversation(payload: ConversationCreate): Promise<Conversation> {
     return this.request<Conversation>("POST", "/api/conversations", { body: payload });
   }
 
@@ -98,12 +99,10 @@ export class ConverseClient {
   // ---- chat turn ----------------------------------------------------
 
   /**
-   * Submit a user message and receive the assistant reply.
-   * Returns the raw response for now; once the backend implements the
-   * LLM turn this should return a Message.
+   * Submit a user message and receive the assistant reply as a Message.
    */
-  chat(conversationId: string, content: string): Promise<unknown> {
-    return this.request<unknown>(
+  chat(conversationId: string, content: string): Promise<Message> {
+    return this.request<Message>(
       "POST",
       `/api/conversations/${conversationId}/chat`,
       { body: { content } },

@@ -14,6 +14,24 @@ export interface Conversation {
   title: string;
   created_at: number;
   updated_at: number | null;
+  /** OpenRouter model id; null falls back to the backend default. */
+  model: string | null;
+  /** Per-conversation system prompt encoding its purpose. */
+  system_prompt: string | null;
+  /** JSON schema for structured-output conversations; null for freeform. */
+  response_schema: Record<string, unknown> | null;
+}
+
+/**
+ * Input payload for creating a conversation. The server owns id/created_at/
+ * updated_at, so callers supply only these fields.
+ */
+export interface ConversationCreate {
+  user_id: string;
+  title: string;
+  model?: string | null;
+  system_prompt?: string | null;
+  response_schema?: Record<string, unknown> | null;
 }
 
 export interface Message {
