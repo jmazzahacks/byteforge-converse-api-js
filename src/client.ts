@@ -38,7 +38,12 @@ export class ConverseClient {
     }
     this.baseUrl = opts.baseUrl.replace(/\/+$/, "");
     this.extraHeaders = opts.extraHeaders ?? {};
-    this.fetchImpl = opts.fetchImpl ?? fetch;
+    // Wrap (not assign) the global fetch — calling `fetch` via a class
+    // property strips its `this` binding, and browsers reject the call
+    // with "Illegal invocation". The wrapper preserves the binding without
+    // relying on globalThis/window/self being defined the same way in
+    // every runtime (browser, Node, edge).
+    this.fetchImpl = opts.fetchImpl ?? ((input, init) => fetch(input, init));
   }
 
   // ---- sessions -----------------------------------------------------
