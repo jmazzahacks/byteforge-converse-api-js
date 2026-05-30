@@ -1,4 +1,5 @@
 import type {
+  ChatTurn,
   Conversation,
   ConversationCreate,
   ListResponse,
@@ -99,10 +100,12 @@ export class ConverseClient {
   // ---- chat turn ----------------------------------------------------
 
   /**
-   * Submit a user message and receive the assistant reply as a Message.
+   * Submit a user message and receive a `ChatTurn` — either a normal
+   * assistant reply or a relay of the tool calls the model wants the caller
+   * to execute. Branch on `turn.type` ("message" | "tool_call").
    */
-  chat(conversationId: string, content: string): Promise<Message> {
-    return this.request<Message>(
+  chat(conversationId: string, content: string): Promise<ChatTurn> {
+    return this.request<ChatTurn>(
       "POST",
       `/api/conversations/${conversationId}/chat`,
       { body: { content } },

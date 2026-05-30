@@ -29,7 +29,23 @@ const client = new ConverseClient({
 });
 
 const { data: conversations } = await client.listConversations();
-const reply = await client.chat(conversations[0].id, "Hello!");
+const turn = await client.chat(conversations[0].id, "Hello!");
+
+// `turn.message` is always set; `turn.tool_calls` is populated when the
+// model asked the caller to invoke one or more tools. Execute them and
+// post each result back as a `tool`-role message with matching
+// `tool_call_id` before the next chat() call.
+console.log(turn.message.content);
+if (turn.tool_calls) {
+  for (const call of turn.tool_calls) {
+    const result = await runTool(call.name, JSON.parse(call.arguments));
+    await client.postMessage(conversations[0].id, {
+      role: "tool",
+      content: JSON.stringify(result),
+      tool_call_id: call.id,
+    });
+  }
+}
 ```
 
 Auth is delegated to the consuming app — pass auth headers via `extraHeaders` or wrap the client.
